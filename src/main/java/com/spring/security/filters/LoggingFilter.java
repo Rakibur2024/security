@@ -16,7 +16,7 @@ public class LoggingFilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
 
-        System.out.println("Requested URI : " + request.getRequestURI());
+        System.out.println("Requested URI by Client : " + request.getRequestURI());
 
         filterChain.doFilter(servletRequest,servletResponse);
     }
