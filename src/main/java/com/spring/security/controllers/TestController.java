@@ -12,4 +12,11 @@ public class TestController {
         System.out.println("Test Method");
         return "Test";
     }
+
+    @GetMapping("/test2")
+    public String test2(){
+        System.out.println("Test Method 2");
+        return "Test 2";
+    }
 }
+
