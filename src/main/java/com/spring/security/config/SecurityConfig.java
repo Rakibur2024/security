@@ -1,10 +1,13 @@
 package com.spring.security.config;
 
+import com.spring.security.entities.Permissions;
+import com.spring.security.entities.Role;
 import com.spring.security.filters.JwtAuthFilter;
 import com.spring.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -40,6 +43,9 @@ public class SecurityConfig {
                                                 "/swagger-ui.html/**",
                                                 "/v3/api-docs/**"
                                         ).permitAll()
+                                        .requestMatchers("/security/test").hasRole(Role.ADMIN.name()) // role based authentication
+                                        .requestMatchers(HttpMethod.GET,"/security/**").hasAuthority(Permissions.SECURITY_READ.name()) // permission based authentication
+                                        .requestMatchers(HttpMethod.POST,"/security/**").hasAuthority(Permissions.SECURITY_WRITE.name())
                                         .anyRequest().authenticated()
                         );
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
