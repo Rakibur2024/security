@@ -1,6 +1,7 @@
 package com.spring.security.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,11 @@ public class TestController {
     public String test2(){
         System.out.println("Test Method 2");
         return "Test 2";
+    }
+
+    @PostMapping("/demoPost")
+    public String demoPost(){
+        return "Demo Post";
     }
 }
 

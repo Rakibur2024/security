@@ -1,15 +1,15 @@
 package com.spring.security.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Users implements UserDetails {
@@ -18,7 +18,9 @@ public class Users implements UserDetails {
     private Long id;
     private String username;
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING) // store in string format in db
+    private Role role;
 
     public Long getId() {
         return id;
@@ -58,7 +60,15 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role));
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
+        Set<SimpleGrantedAuthority> permissionsAuthorities = role.getPermissions().stream()
+                .map(permissions -> new SimpleGrantedAuthority(permissions.name()))
+                .collect(Collectors.toSet());
+        authorities.addAll(permissionsAuthorities);
+
+        return authorities;
     }
 
     public String getPassword() {
@@ -69,11 +79,11 @@ public class Users implements UserDetails {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
