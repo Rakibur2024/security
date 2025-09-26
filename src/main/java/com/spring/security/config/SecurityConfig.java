@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +24,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -43,9 +45,9 @@ public class SecurityConfig {
                                                 "/swagger-ui.html/**",
                                                 "/v3/api-docs/**"
                                         ).permitAll()
-                                        .requestMatchers("/security/test").hasRole(Role.ADMIN.name()) // role based authentication
-                                        .requestMatchers(HttpMethod.GET,"/security/**").hasAuthority(Permissions.SECURITY_READ.name()) // permission based authentication
-                                        .requestMatchers(HttpMethod.POST,"/security/**").hasAuthority(Permissions.SECURITY_WRITE.name())
+//                                        .requestMatchers("/security/test").hasRole(Role.ADMIN.name()) // role based authentication
+//                                        .requestMatchers(HttpMethod.GET,"/security/**").hasAuthority(Permissions.SECURITY_READ.name()) // permission based authentication
+//                                        .requestMatchers(HttpMethod.POST,"/security/**").hasAuthority(Permissions.SECURITY_WRITE.name())
                                         .anyRequest().authenticated()
                         );
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
