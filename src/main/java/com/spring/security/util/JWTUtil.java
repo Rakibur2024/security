@@ -14,7 +14,7 @@ import java.util.Date;
 public class JWTUtil {
     private final String SECRET = "my-super-secret-key-that-is-long-enough-123456789!@#";
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
-    private final long EXPIRATION_TIME = 1000*60*1;
+    private final long EXPIRATION_TIME = 1000*60*60;
 
     public String generateToken(String username){
         return Jwts.builder()
